@@ -1,0 +1,72 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<section class="container">
+    <div class="card form-card">
+        <div class="section-title">
+            <h1>Join Our Community</h1>
+            <p class="page-subtitle">Create an account to start sharing your ideas.</p>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">Registration failed</div>
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="POST" novalidate class="form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}" class="required">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="form-error-message">{{ form.username.errors.0 }}</div>
+                {% endif %}
+                <p class="form-note">Your unique username for logging in.</p>
+            </div>
+
+            {% if form.email %}
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}" class="required">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="form-error-message">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}" class="required">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="form-error-message">{{ form.password1.errors.0 }}</div>
+                {% endif %}
+                <p class="form-note">Choose a strong password with at least 8 characters.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}" class="required">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="form-error-message">{{ form.password2.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+        </form>
+
+        <div class="form-note">
+            Already have an account?
+            <a href="{% url 'login' %}">Sign in</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

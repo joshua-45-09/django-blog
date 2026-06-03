@@ -1,0 +1,120 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<section class="container posts-page">
+    <div class="hero-panel">
+        <div class="hero-copy">
+            <p class="hero-pill">Write, publish, inspire</p>
+            <h1>A modern home for thoughtful writing</h1>
+            <p class="hero-text">Explore insightful blog posts and stay updated with the latest news and perspectives from our community.</p>
+            <div class="hero-actions">
+                <a href="{% url 'create_post' %}" class="btn btn-primary btn-lg">Create post</a>
+                <a href="#posts" class="btn btn-secondary btn-lg">Browse posts</a>
+            </div>
+        </div>
+        <div class="hero-metrics">
+            <div class="metric-card">
+                <span class="metric-value">{{ page_obj.paginator.count }}</span>
+                <span class="metric-label">Total articles</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ page_obj|length }}</span>
+                <span class="metric-label">Displayed this page</span>
+            </div>
+        </div>
+    </div>
+
+    <header class="page-header">
+        <div>
+            <h2>Latest articles</h2>
+            <p class="page-subtitle">Explore insightful blog posts and stay updated with the latest news and insights.</p>
+        </div>
+        <form method="GET" class="search-form" aria-label="Search posts">
+            <input
+                type="text"
+                name="q"
+                value="{{ request.GET.q }}"
+                placeholder="Search articles..."
+                aria-label="Search query"
+            >
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </header>
+
+    {% if page_obj %}
+        <div class="posts-list" id="posts">
+            {% for post in page_obj %}
+                <article class="post-card">
+                    <div class="post-card-top">
+                        <div class="post-card-badges">
+                            {% if post.category %}
+                                <span class="badge badge-secondary">{{ post.category.name }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-meta-item">{{ post.author.get_full_name|default:post.author.username }}</span>
+                            <span class="post-meta-separator">•</span>
+                            <time class="post-meta-item" datetime="{{ post.created_at|date:'Y-m-d' }}">{{ post.created_at|date:'M d, Y' }}</time>
+                        </div>
+                    </div>
+                    <h2 class="post-card-title"><a href="{% url 'detail_post' post.pk %}">{{ post.title }}</a></h2>
+                    <p class="post-excerpt">{{ post.content|truncatechars:220 }}</p>
+                    <div class="post-card-footer">
+                        <div class="post-tag-list">
+                            {% for tag in post.tags.all %}
+                                <span class="badge badge-primary">{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'detail_post' post.pk %}" class="read-more">Read full article →</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+            <nav class="pagination" aria-label="Post pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="page-link" aria-label="First page">«</a>
+                {% else %}
+                    <span class="page-link disabled" aria-label="First page (disabled)">«</span>
+                {% endif %}
+
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous page">‹</a>
+                {% else %}
+                    <span class="page-link disabled" aria-label="Previous page (disabled)">‹</span>
+                {% endif %}
+
+                {% for page_num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == page_num %}
+                        <span class="page-link active" aria-current="page">{{ page_num }}</span>
+                    {% elif page_num > page_obj.number|add:'-3' and page_num < page_obj.number|add:'3' %}
+                        <a href="?page={{ page_num }}" class="page-link">{{ page_num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next page">›</a>
+                {% else %}
+                    <span class="page-link disabled" aria-label="Next page (disabled)">›</span>
+                {% endif %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" aria-label="Last page">»</a>
+                {% else %}
+                    <span class="page-link disabled" aria-label="Last page (disabled)">»</span>
+                {% endif %}
+
+                <span class="pagination-summary">Page <strong>{{ page_obj.number }}</strong> of <strong>{{ page_obj.paginator.num_pages }}</strong></span>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            <div class="alert-icon">ℹ️</div>
+            <div class="alert-content">
+                <div class="alert-title">No posts found</div>
+                <p>Try adjusting your search terms or browse all posts.</p>
+            </div>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

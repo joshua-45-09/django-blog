@@ -1,0 +1,60 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<section class="container">
+    <div class="card form-card">
+        <div class="section-title">
+            <h1>Edit Article</h1>
+            <p class="page-subtitle">Update your article and keep your readers informed with fresh content.</p>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">Unable to update article</div>
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="POST" novalidate class="form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}" class="required">Article Title</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="form-error-message">{{ form.title.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.content.id_for_label }}" class="required">Article Content</label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                    <div class="form-error-message">{{ form.content.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            {% if form.tags %}
+                <div class="form-group">
+                    <label for="{{ form.tags.id_for_label }}">Tags</label>
+                    {{ form.tags }}
+                    {% if form.tags.errors %}
+                        <div class="form-error-message">{{ form.tags.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg">Update Article</button>
+                <a href="{% url 'home' %}" class="btn btn-ghost btn-lg">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
