@@ -1,28 +1,28 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<section class="container">
-    <div class="card form-card card-danger">
-        <div class="section-title">
+<section>
+    <div >
+        <div>
             <h1>Delete Article</h1>
-            <p class="page-subtitle">This action cannot be undone.</p>
+            <p>This action cannot be undone.</p>
         </div>
 
-        <div class="alert alert-error">
-            <div class="alert-icon">🗑️</div>
-            <div class="alert-content">
-                <div class="alert-title">Permanent deletion</div>
+        <div>
+            <div>🗑️</div>
+            <div>
+                <div>Permanent deletion</div>
                 <p>You are about to permanently delete the article:</p>
-                <p class="strong-text">"{{ post.title }}"</p>
+                <p>"{{ post.title }}"</p>
             </div>
         </div>
 
-        <form method="POST" class="form confirm-delete">
+        <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-danger btn-lg">Yes, Delete Article</button>
-                <a href="{% url 'detail_post' post.pk %}" class="btn btn-secondary btn-lg">Cancel</a>
+            <div>
+                <button type="submit">Yes, Delete Article</button>
+                <a href="{% url 'detail_post' post.pk %}">Cancel</a>
             </div>
         </form>
     </div>

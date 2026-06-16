@@ -1,27 +1,27 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<article class="container">
-    <header class="article-header">
-        <div class="article-badge-row">
+<article >
+    <header >
+        <div >
             {% if post.category %}
-                <span class="badge badge-secondary">{{ post.category.name }}</span>
+                <span ">{{ post.category.name }}</span>
             {% endif %}
             {% for tag in post.tags.all %}
-                <span class="badge badge-primary">{{ tag.name }}</span>
+                <span >{{ tag.name }}</span>
             {% endfor %}
         </div>
-        <h1 class="article-title">{{ post.title }}</h1>
+        <h1 >{{ post.title }}</h1>
         {% if post.content|length > 100 %}
-            <p class="article-subtitle">A comprehensive look at the topic</p>
+            <p >A comprehensive look at the topic</p>
         {% endif %}
     </header>
 
-    <div class="article-meta">
-        <div class="author-info">
-            <div class="author-avatar">
+    <div>
+        <div >
+            <div >
                 {{ post.author.first_name|first|upper }}{{ post.author.last_name|first|upper }}
             </div>
-            <div class="author-details">
+            <div >
                 <h4>{{ post.author.get_full_name|default:post.author.username }}</h4>
                 <p>
                     <time datetime="{{ post.created_at|date:'Y-m-dTH:i:sZ' }}">Published {{ post.created_at|date:'F j, Y' }}</time>
@@ -30,15 +30,15 @@
         </div>
     </div>
 
-    <div class="article-content">
+    <div>
         {{ post.content|linebreaks }}
     </div>
 
-    <div class="article-actions">
-        <a href="{% url 'home' %}" class="btn btn-ghost">← Back to Posts</a>
+    <div>
+        <a href="{% url 'home' %}">← Back to Posts</a>
         {% if request.user == post.author %}
-            <a href="{% url 'update_post' post.pk %}" class="btn btn-secondary">Edit Article</a>
-            <a href="{% url 'delete_post' post.pk %}" class="btn btn-danger">Delete Article</a>
+            <a href="{% url 'update_post' post.pk %}">Edit Article</a>
+            <a href="{% url 'delete_post' post.pk %}" >Delete Article</a>
         {% endif %}
     </div>
 </article>

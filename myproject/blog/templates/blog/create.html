@@ -1,17 +1,17 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<section class="container">
-    <div class="card form-card">
-        <div class="section-title">
+<section>
+    <div>
+        <div>
             <h1>Create New Article</h1>
-            <p class="page-subtitle">Share your thoughts and insights with the community.</p>
+            <p>Share your thoughts and insights with the community.</p>
         </div>
 
         {% if form.non_field_errors %}
-            <div class="alert alert-error">
-                <div class="alert-icon">⚠️</div>
-                <div class="alert-content">
-                    <div class="alert-title">Unable to create article</div>
+            <div>
+                <div>⚠️</div>
+                <div>
+                    <div>Unable to create article</div>
                     <ul>
                         {% for error in form.non_field_errors %}
                             <li>{{ error }}</li>
@@ -21,41 +21,41 @@
             </div>
         {% endif %}
 
-        <form method="POST" novalidate class="form">
+        <form method="POST" novalidate>
             {% csrf_token %}
 
-            <div class="form-group">
-                <label for="{{ form.title.id_for_label }}" class="required">Article Title</label>
+            <div>
+                <label for="{{ form.title.id_for_label }}">Article Title</label>
                 {{ form.title }}
                 {% if form.title.errors %}
-                    <div class="form-error-message">{{ form.title.errors.0 }}</div>
+                    <div>{{ form.title.errors.0 }}</div>
                 {% endif %}
-                <p class="form-note">Give your article a clear, compelling title.</p>
+                <p>Give your article a clear, compelling title.</p>
             </div>
 
-            <div class="form-group">
-                <label for="{{ form.content.id_for_label }}" class="required">Article Content</label>
+            <div>
+                <label for="{{ form.content.id_for_label }}">Article Content</label>
                 {{ form.content }}
                 {% if form.content.errors %}
-                    <div class="form-error-message">{{ form.content.errors.0 }}</div>
+                    <div>{{ form.content.errors.0 }}</div>
                 {% endif %}
-                <p class="form-note">Write your full article content here.</p>
+                <p>Write your full article content here.</p>
             </div>
 
             {% if form.tags %}
-                <div class="form-group">
+                <div>
                     <label for="{{ form.tags.id_for_label }}">Tags</label>
                     {{ form.tags }}
                     {% if form.tags.errors %}
-                        <div class="form-error-message">{{ form.tags.errors.0 }}</div>
+                        <div>{{ form.tags.errors.0 }}</div>
                     {% endif %}
-                    <p class="form-note">Select relevant tags to categorize your article.</p>
+                    <p>Select relevant tags to categorize your article.</p>
                 </div>
             {% endif %}
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-lg">Publish Article</button>
-                <a href="{% url 'home' %}" class="btn btn-ghost btn-lg">Cancel</a>
+            <div>
+                <button type="submit">Publish Article</button>
+                <a href="{% url 'home' %}">Cancel</a>
             </div>
         </form>
     </div>
